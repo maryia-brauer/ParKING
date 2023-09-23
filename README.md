@@ -1,10 +1,6 @@
 # ParKING
-This is main branch. Here we push only final versions.
+This is dev branch. Here we do all the work. 
 
-IMPORTANT!!
-Before push here, all members of the team should know about it!!!
-
-*For work use dev branch!
 
 Some command you should use:
 git branch //to see on which branch you are
