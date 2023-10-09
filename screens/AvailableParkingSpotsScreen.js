@@ -13,6 +13,7 @@ import React, { useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import PlacesInfo from "../component/PlacesInfo";
 
+
 const AvailableParkingSpotsScreen = ({ route }) => {
   const navigation = useNavigation();
   const data = route?.params?.param;
@@ -33,52 +34,55 @@ const AvailableParkingSpotsScreen = ({ route }) => {
         </Text>
       </View>
       <View>
-        <View
-          style={{
-            marginTop: 20,
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderRadius: 7,
-            border: "solid black",
-            borderWidth: 0.5,
-          }}
-        >
-          <TextInput
+        <View style={{ paddingHorizontal: 10, flexDirection: "row" }}>
+          <View
             style={{
-              fontSize: 20,
-              width: 300,
-              backgroundColor: "white",
-              paddingVertical: 10,
+              marginTop: 10,
+              borderRadius: 7,
+              border: "solid black",
+              borderWidth: 0.5,
             }}
-            placeholder="Search"
-          />
-          <Image
-            style={{ justifyContent: "space-between" }}
-            source={require("../assets/filter.png")}
-          />
+          >
+            <TextInput
+              style={{
+                fontSize: 20,
+                width: 300,
+                backgroundColor: "white",
+                paddingVertical: 10,
+              }}
+              placeholder="Search"
+            />
+          </View>
+          <View style={{ paddingHorizontal: 4, paddingVertical: 10 }}>
+            <Image
+              style={{ justifyContent: "space-between" }}
+              source={require("../assets/filter.png")}
+            />
+          </View>
         </View>
       </View>
       <ScrollView>
-        <View>
+        <Pressable >
           <PlacesInfo />
-        </View>
+        </Pressable>
       </ScrollView>
 
-      <View         
+      <View
         style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}>
-        <Pressable
-          onPress={() => navigation.navigate("AddPlace")}
-        >
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
+        <Pressable onPress={() => navigation.navigate("AddPlace")}>
           <Image
             style={{ bottom: 100 }}
             source={require("../assets/add.png")}
           ></Image>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate("CityScreen")}>
+        </Pressable>
+        <Pressable
+          style={{ paddingHorizontal: 20 }}
+          onPress={() => navigation.navigate("CityScreen")}
+        >
           <Image
             style={{ bottom: 100 }}
             source={require("../assets/back.png")}

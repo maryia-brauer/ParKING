@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -8,7 +8,7 @@ const PlacesInfo = ({route}) => {
     const data = route?.params?.param;
     return (
         <TouchableOpacity 
-            onPress={() => navigation.navigate("Available", {param : data})}
+            onPress={() => navigation.navigate("ParkingSpot", {param : data})}
         >
         <View style={{
             marginTop: 20,
@@ -18,10 +18,17 @@ const PlacesInfo = ({route}) => {
             borderRadius: 8,
             border: "solid black",
             gap: 5,
-            width: 350
+            width: 350,
+            flex: 1,
             }}>
-        <Text style={{padding: 10}}>{data?.name}</Text>
-            </View>
+        <View style={{ paddingHorizontal: 10}}>
+        <Text style={{fontWeight: "bold", fontSize:23 }}>Place name</Text>
+        <Text>Available spots: 10</Text>
+        </View>
+        <View style={{ paddingHorizontal: 140}}>
+        <Image  source={require("../assets/eye.png")}/>
+        </View>
+        </View>
         </TouchableOpacity>
     )
 }

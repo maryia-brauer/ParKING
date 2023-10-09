@@ -8,14 +8,39 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
+  Radio,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { useNavigation } from "@react-navigation/native";
+import RadioGroup from 'react-native-radio-buttons-group';
 //import axios from 'axios';
 
 const AddParkingScreen = ({ route }) => {
   const navigation = useNavigation();
   const data = route?.params?.param;
+  const [price, setPrice] = useState("free");
+  const [pricePerHour, setPricePerHour] = useState("");
+  const [selectedId, setSelectedId] = useState();
+
+  const radioButtons = useMemo(() => ([
+    {
+        id: '1', // acts as primary key, should be unique and non-empty string
+        label: 'Free',
+        value: 'option1'
+    },
+    {
+        id: '2',
+        label: 'Paid',
+        value: 'option2'
+    }
+]), []);
+
+  const handlePriceChange = (value) => {
+    setPrice(value);
+    if (value === "paid") {
+      setPricePerHour("");
+    }
+  };
 
   return (
     <SafeAreaView
@@ -39,27 +64,86 @@ const AddParkingScreen = ({ route }) => {
           ADD A PARKING SPOT
         </Text>
       </View>
-      <View style={{ flex: 1, backgroundColor: "grey", width: 350, paddingBottom: 5 }}> 
-      <Text style={{paddingTop: 10}}>Where is the spot located?</Text>
+      <View
+        style={{ backgroundColor: "#D3D3D3", width: 350, paddingBottom: 10 }}
+      >
+        <View style={{ paddingHorizontal: 20 }}>
+          <Text style={{ paddingTop: 10 }}>Where is the spot located?</Text>
+          <View
+            style={{
+              marginTop: 10,
+              backgroundColor: "white",
+              paddingVertical: 2,
+              borderRadius: 10,
+              border: "solid black",
+              borderWidth: 1,
+            }}
+          >
+            <TextInput
+              style={{ fontSize: 20, width: 200 }}
+              placeholder="Add a street address"
+            />
+          </View>
+        </View>
+        <View style={{ paddingHorizontal: 20 }}>
+          <Text style={{ paddingTop: 10 }}>
+            How many vehicles can be parked there?
+          </Text>
+          <View
+            style={{
+              marginTop: 10,
+              backgroundColor: "white",
+              paddingVertical: 2,
+              borderRadius: 10,
+              border: "solid black",
+              borderWidth: 1,
+            }}
+          >
+            <TextInput
+              style={{ fontSize: 20, width: 200 }}
+              placeholder="Add a street address"
+            />
+          </View>
+        </View>
+        <View style={{ paddingHorizontal: 20 }}>
+          <Text style={{ paddingTop: 10 }}>
+            Is the parking for free or paid?
+          </Text>
+          <RadioGroup
+            layout="row"
+            radioButtons={radioButtons} 
+            onPress={setSelectedId}
+            selectedId={selectedId}
+        />
+        </View>
+        <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
+          <View
+            style={{
+              marginTop: 10,
+            }}
+          >
+            <Text style={{ paddingTop: 10 }}>How much per hour?</Text>
+          </View>
+        </View>
       </View>
-      <View         
+
+      <View
         style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-          }}>
+          flexDirection: "row",
+          justifyContent: "space-between",
+        }}
+      >
         <Pressable
           onPress={() => navigation.navigate("Available")}
+          style={{ paddingVertical: 50 }}
         >
-          <Image
-            style={{ bottom: 100 }}
-            source={require("../assets/add.png")}
-          ></Image>
-          </Pressable>
-          <Pressable onPress={() => navigation.navigate("CityScreen")}>
-          <Image
-            style={{ bottom: 100 }}
-            source={require("../assets/back.png")}
-          ></Image>
+          <Image source={require("../assets/confirm.png")}></Image>
+        </Pressable>
+        <Pressable
+          style={{ paddingHorizontal: 15, paddingVertical: 50 }}
+          onPress={() => navigation.navigate("Available")}
+        >
+          <Image style={{}} source={require("../assets/back.png")}></Image>
         </Pressable>
       </View>
     </SafeAreaView>

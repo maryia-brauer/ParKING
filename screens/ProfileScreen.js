@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
 import {React, useLayoutEffect} from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Favourites from '../component/Favourites';
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
@@ -33,7 +34,7 @@ const ProfileScreen = () => {
             }}>PlaceHolder name</Text>
     </View>
     <View>
-      <Text>Place for favourites</Text>
+      <Favourites/>
     </View>
     <View>
       <Pressable onPress={()=> navigation.navigate("Login")}>
