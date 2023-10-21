@@ -22,10 +22,10 @@ const PlacesInfo = ({route}) => {
             flex: 1,
             }}>
         <View style={{ paddingHorizontal: 10}}>
-        <Text style={{fontWeight: "bold", fontSize:23 }}>Place name</Text>
+        <Text style={{fontWeight: "bold", fontSize:20 }}>Zvejnieku iela 13</Text>
         <Text>Available spots: 10</Text>
         </View>
-        <View style={{ paddingHorizontal: 140}}>
+        <View style={{ paddingHorizontal: 100}}>
         <Image  source={require("../assets/eye.png")}/>
         </View>
         </View>

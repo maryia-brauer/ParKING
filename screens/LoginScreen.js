@@ -12,7 +12,7 @@ import {
 import React, { useEffect, useState } from "react";
 import {useNavigation} from '@react-navigation/native';
 import { authFire } from "../firebase";
-import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");

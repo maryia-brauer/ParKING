@@ -17,15 +17,9 @@ import { db } from "../firebase";
 import { ref, onValue } from "firebase/database";
 
 const CityScreen = () => {
-  const [parkingData, setParkingData] = useState([data]);
+  const [data, setData] = useState([]);
   const navigation = useNavigation();
 
- /* useEffect(() => {
-    fetch('https://reactnative-dc928-default-rtdb.europe-west1.firebasedatabase.app/cities')
-    .then(response => response.json())
-    .then(data => setParkingData(data));
-  }, []);
-*/
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -60,157 +54,12 @@ const CityScreen = () => {
           />
         </View>
         <View>
-        {data.map((data, i) => {
-          return (
-            <Places
-              key={i}
-              name={data.city}
-              data={data}
-            />
-          )
-        })}
+        <Places /> 
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
-
-const data = [
-  {
-    "city": "San Francisco",
-    "parkingSpaces": [
-      {
-        "address": "123 Main Street",
-        "name": "Union Square Garage",
-        "type": "public",
-        "price": 25,
-        "image": "https://example.com/parking-garage.jpg"
-      },
-      {
-        "address": "456 Market Street",
-        "name": "Embarcadero Center Garage",
-        "type": "private",
-        "price": 30,
-        "image": "https://example.com/parking-garage.jpg"
-      }
-    ]
-  },
-  {
-    "city": "San Francisco",
-    "parkingSpaces": [
-      {
-        "address": "123 Main Street",
-        "name": "Union Square Garage",
-        "type": "public",
-        "price": 25,
-        "image": "https://example.com/parking-garage.jpg"
-      },
-      {
-        "address": "456 Market Street",
-        "name": "Embarcadero Center Garage",
-        "type": "private",
-        "price": 30,
-        "image": "https://example.com/parking-garage.jpg"
-      }
-    ]
-  },
-  {
-    "city": "San Francisco",
-    "parkingSpaces": [
-      {
-        "address": "123 Main Street",
-        "name": "Union Square Garage",
-        "type": "public",
-        "price": 25,
-        "image": "https://example.com/parking-garage.jpg"
-      },
-      {
-        "address": "456 Market Street",
-        "name": "Embarcadero Center Garage",
-        "type": "private",
-        "price": 30,
-        "image": "https://example.com/parking-garage.jpg"
-      }
-    ]
-  },
-  {
-    "city": "San Francisco",
-    "parkingSpaces": [
-      {
-        "address": "123 Main Street",
-        "name": "Union Square Garage",
-        "type": "public",
-        "price": 25,
-        "image": "https://example.com/parking-garage.jpg"
-      },
-      {
-        "address": "456 Market Street",
-        "name": "Embarcadero Center Garage",
-        "type": "private",
-        "price": 30,
-        "image": "https://example.com/parking-garage.jpg"
-      }
-    ]
-  },
-  {
-    "city": "San Francisco",
-    "parkingSpaces": [
-      {
-        "address": "123 Main Street",
-        "name": "Union Square Garage",
-        "type": "public",
-        "price": 25,
-        "image": "https://example.com/parking-garage.jpg"
-      },
-      {
-        "address": "456 Market Street",
-        "name": "Embarcadero Center Garage",
-        "type": "private",
-        "price": 30,
-        "image": "https://example.com/parking-garage.jpg"
-      }
-    ]
-  },
-  {
-    "city": "San Francisco",
-    "parkingSpaces": [
-      {
-        "address": "123 Main Street",
-        "name": "Union Square Garage",
-        "type": "public",
-        "price": 25,
-        "image": "https://example.com/parking-garage.jpg"
-      },
-      {
-        "address": "456 Market Street",
-        "name": "Embarcadero Center Garage",
-        "type": "private",
-        "price": 30,
-        "image": "https://example.com/parking-garage.jpg"
-      }
-    ]
-  },
-  {
-    "city": "New York City",
-    "parkingSpaces": [
-      {
-        "address": "1 Times Square",
-        "name": "Times Square Garage",
-        "type": "public",
-        "price": 40,
-        "image": "https://example.com/parking-garage.jpg"
-      },
-      {
-        "address": "456 5th Avenue",
-        "name": "Rockefeller Center Garage",
-        "type": "private",
-        "price": 50,
-        "image": "https://example.com/parking-garage.jpg"
-      }
-    ]
-  }
-]
-
 
 
 export default CityScreen;

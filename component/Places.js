@@ -19,7 +19,7 @@ const Places = ({name, data}) => {
             gap: 5,
             width: 350
             }}>
-        <Text style={{padding: 10}}>{name}</Text>
+        <Text style={{padding: 10}}>Valmiera</Text>
             </View>
         </TouchableOpacity>
     )

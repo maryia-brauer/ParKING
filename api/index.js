@@ -1,43 +1,40 @@
-const express = require("express");
+const express = require('express');
+const mysql = require('mysql')
+const cors = require('cors')
 
+
+// Starting our app.
 const app = express();
-const port = 8000;
 
-
-const jwt = require("jsonwebtoken");
-app.listen(port, () => {
-  console.log("Server is running on port 8000");
-});
-
-const generateSecretKey = () => {
-    const secretKey = crypto.randomBytes(32).toString("hex");
-  
-    return secretKey;
-  };
-  
-  const secretKey = generateSecretKey();
-  
-  //endpoint to login the user!
-  app.post("/login", async (req, res) => {
-    try {
-      const { email, password } = req.body;
-  
-      //check if the user exists
-      const user = await User.findOne({ email });
-      if (!user) {
-        return res.status(401).json({ message: "Invalid email or password" });
-      }
-  
-      //check if the password is correct
-      if (user.password !== password) {
-        return res.status(401).json({ message: "Invalid password" });
-      }
-  
-      //generate a token
-      const token = jwt.sign({ userId: user._id }, secretKey);
-  
-      res.status(200).json({ token });
-    } catch (error) {
-      res.status(500).json({ message: "Login Failed" });
-    }
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
   });
+
+app.use(cors())
+
+const connection = mysql.createConnection({
+    host     : 'localhost',
+    user     : 'root',
+    password : '',
+    database : 'parking',
+  });
+  
+
+app.get('/', (re, res)=> {
+    return res.json("from back")
+})
+
+app.get('/parking', (req, res)=> {
+    const sql = "SELECT * FROM parkingsports";
+    connection.query(sql, (err, data)=> {
+        if(err) return res.json(err);
+        return res.json(data);
+    })
+    
+}) 
+
+app.listen(5000, () => {
+console.log("Running")
+})

@@ -11,12 +11,15 @@ import {getDatabase} from 'firebase/database';
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyAoLXouLmho3-aHMGzdJ2U2UAnm_yOZR3c",
+  //databaseURL: 'https://reactnative-dc928-default-rtdb.europe-west1.firebasedatabase.app',
   authDomain: "reactnative-dc928.firebaseapp.com",
   projectId: "reactnative-dc928",
   storageBucket: "reactnative-dc928.appspot.com",
   messagingSenderId: "784792102241",
   appId: "1:784792102241:web:3dca324c58b0815fc09120",
-  measurementId: "G-SX9BWCT77K"
+  measurementId: "G-SX9BWCT77K",
+  
+
 };
 
 // Initialize Firebase

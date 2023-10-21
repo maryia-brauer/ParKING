@@ -9,15 +9,31 @@ import {
   Pressable,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import PlacesInfo from "../component/PlacesInfo";
+import { db } from "../firebase";
+import { ref, onValue } from "firebase/database";
 
 
-const AvailableParkingSpotsScreen = ({ route }) => {
+const AvailableParkingSpotsScreen = () => {
   const navigation = useNavigation();
-  const data = route?.params?.param;
+  const [data, setData] = useState([]);
 
+  
+  useEffect(() => {
+    const starCountRef = ref(db, "parkingData/");
+    onValue(starCountRef, (snapshot) => {
+      const data = snapshot.val();
+      const places = Object.keys(data).map((key) => ({
+        id: key,
+        ...data[key],
+
+      }));
+      console.log(places);
+      setData(places);
+  })
+  }, []);
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -63,7 +79,15 @@ const AvailableParkingSpotsScreen = ({ route }) => {
       </View>
       <ScrollView>
         <Pressable >
-          <PlacesInfo />
+
+              {data.map((item, index) => {
+                return (
+                  <PlacesInfo key={index} {...item} />
+                )
+              } )
+
+              }
+  
         </Pressable>
       </ScrollView>
 
