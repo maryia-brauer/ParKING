@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import React, { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import LoginScreen from '../screens/LoginScreen';
@@ -8,15 +8,17 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import AvailableParkingSpotsScreen from '../screens/AvailableParkingSpotsScreen';
 import ParkingSpotInfo from '../screens/ParkingSpotInfo';
 import ProfileScreen from '../screens/ProfileScreen';
-
+import {User} from 'firebase/auth';
 import AddParkingScreen from '../screens/AddParkingScreen';
 import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons'; 
+import { authFire } from '../firebase';
 
 
 
 
 const StackNavigator = () => {
+
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
   function BottomTabs() {
@@ -57,6 +59,7 @@ const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
+      
         <Stack.Screen name="Login" component={LoginScreen} options={{headerShown:false}} />
         <Stack.Screen name="CityScreen" component={CityScreen} options={{headerShown:false}} />
         <Stack.Screen name="Profile" component={ProfileScreen}/>

@@ -3,15 +3,18 @@ import {React, useLayoutEffect} from 'react'
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Favourites from '../component/Favourites';
+import { authFire } from "../firebase";
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
+  const user = authFire.currentUser;
 
   useLayoutEffect(() => {
     navigation.setOptions({
         headerShown: false,
     });
 }, []);
+
 
   return (
     <SafeAreaView     
@@ -31,15 +34,17 @@ const ProfileScreen = () => {
               width: 350,
               fontWeight: "bold",
               alignItems:'center',
-            }}>PlaceHolder name</Text>
+              left: 84,
+            }}> {user?.displayName} </Text>
+            <Image source={{uri: user?.photoURL}} style={{width: 100, height: 100}}/>
     </View>
     <View>
       <Favourites/>
     </View>
     <View>
-      <Pressable onPress={()=> navigation.navigate("Login")}>
+      <Pressable onPress={()=> navigation.replace("Login")}>
         <Image
-          style={{ top: 200, width: 300, borderRadius: 20 }}
+          style={{ top: 100, width: 300, borderRadius: 20 }}
           source={require("../assets/logout.png")}
         />
         </Pressable>

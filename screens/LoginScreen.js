@@ -9,9 +9,10 @@ import {
   TouchableOpacity,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {useNavigation} from '@react-navigation/native';
-//import axios from 'axios';
+import { authFire } from "../firebase";
+import { signInWithEmailAndPassword, onAuthStateChanged, updateProfile } from "firebase/auth";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
@@ -21,41 +22,28 @@ const LoginScreen = () => {
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
   };
-  navigation.replace("Main");
+  const auth = authFire;
 
-/*  useEffect(() => {
-    const checkLoginStatus = async () => {
+
+  const goToMain = async () => {
+    if (email && password) {
       try {
-        const token = await AsyncStorage.getItem("authToken");
-        if (token) {
-          navigation.replace("Main");
-        }
-      } catch (err) {
-        console.log("error message", err);
-      }
-    };
-    checkLoginStatus();
-  }, []);
-  const handleLogin = () => {
-    const user = {
-      email: email,
-      password: password,
-    };
-
-    axios
-      .post("http://localhost:8000/login", user)
-      .then((response) => {
+        const response = await signInWithEmailAndPassword(auth, email, password)
         console.log(response);
-        const token = response.data.token;
-        AsyncStorage.setItem("authToken", token);
-        navigation.replace("CityScreen");
-      })
-      .catch((error) => {
-        Alert.alert("Login Error", "Invalid Email");
-        console.log(error);
-      });
-  };
-*/
+        console.log('Logged in')
+        if (response.user) {
+           navigation.replace("Main");
+           console.log('Logged in succes')
+        }
+
+      } catch (error) {
+        console.log(error)
+    }
+  }else{
+    alert("Please enter your email and password");
+  }
+  }
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -139,7 +127,7 @@ const LoginScreen = () => {
         </View>
       </KeyboardAvoidingView>
       <View>
-      <Pressable onPress={()=> navigation.navigate("CityScreen")}>
+      <Pressable onPress={() => goToMain() }>
         <Image
           style={{ top: 30, width: 300, borderRadius: 20 }}
           source={require("../assets/login.png")}

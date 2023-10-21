@@ -11,22 +11,21 @@ import {
   ScrollView,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import {useNavigation} from '@react-navigation/native';
-import Places from '../component/Places';
-
+import { useNavigation } from "@react-navigation/native";
+import Places from "../component/Places";
+import { db } from "../firebase";
+import { ref, onValue } from "firebase/database";
 
 const CityScreen = () => {
-const [places, setData] = useState(data); 
-const navigation = useNavigation();
+  const [parkingData, setParkingData] = useState([data]);
+  const navigation = useNavigation();
 
-useEffect(() => {
- // fetch('http://192.168.8.162:3001/zoo')
-  //.then(res => res.json())
-  //.then(data => setData(data))
-  //.catch(err => console.log(err));
-}, []);
-
-
+ /* useEffect(() => {
+    fetch('https://reactnative-dc928-default-rtdb.europe-west1.firebasedatabase.app/cities')
+    .then(response => response.json())
+    .then(data => setParkingData(data));
+  }, []);
+*/
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -38,11 +37,13 @@ useEffect(() => {
         />
       </View>
       <View>
-        <Text style={{marginTop: 150, width: 350, paddingBottom: 5}}>Choose a city</Text>
+        <Text style={{ marginTop: 150, width: 350, paddingBottom: 5 }}>
+          Choose a city
+        </Text>
       </View>
       <ScrollView>
-      <View  
-            style={{
+        <View
+          style={{
             marginTop: 20,
             flexDirection: "row",
             backgroundColor: "white",
@@ -51,11 +52,15 @@ useEffect(() => {
             border: "solid black",
             borderWidth: 0.5,
             gap: 5,
-          }}>
-        <TextInput style={{ fontSize: 20, width: 350 }} placeholder="Search"/>
-      </View>
-      <View>
-        {places.map((data, i) => {
+          }}
+        >
+          <TextInput
+            style={{ fontSize: 20, width: 350 }}
+            placeholder="Search"
+          />
+        </View>
+        <View>
+        {data.map((data, i) => {
           return (
             <Places
               key={i}
@@ -64,13 +69,12 @@ useEffect(() => {
             />
           )
         })}
-      </View>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );
 };
 
-// example test adata
 const data = [
   {
     "city": "San Francisco",
@@ -207,6 +211,8 @@ const data = [
   }
 ]
 
-export default CityScreen
 
-const styles = StyleSheet.create({})
+
+export default CityScreen;
+
+const styles = StyleSheet.create({});
