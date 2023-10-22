@@ -45,6 +45,9 @@ const LoginScreen = () => {
   }
   }
 
+  //Email is test@test.com and password is test112
+
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
