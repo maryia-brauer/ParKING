@@ -35,7 +35,7 @@ const ProfileScreen = () => {
               fontWeight: "bold",
               alignItems:'center',
               left: 84,
-            }}> {user?.displayName} </Text>
+            }}> {user?.email} </Text>
             <Image source={{uri: user?.photoURL}} style={{width: 100, height: 100}}/>
     </View>
     <View>

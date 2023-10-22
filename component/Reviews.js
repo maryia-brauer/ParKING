@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native';
 
-const Reviews = () => {
+const Reviews = ({route}) => {
+  const navigation = useNavigation();
   return (
     <View>
-      <Text>List of Reviews:</Text>
+      <Text>List of Reviews: {route?.params?.param?.reviews}</Text>
     </View>
   )
 }

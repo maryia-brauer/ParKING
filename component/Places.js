@@ -3,11 +3,11 @@ import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
-const Places = ({name, data}) => {
+const Places = () => {
     const navigation = useNavigation();
     return (
         <TouchableOpacity 
-            onPress={() => navigation.navigate("Available", {param : data})}
+            onPress={() => navigation.navigate("Available")}
         >
         <View style={{
             marginTop: 20,

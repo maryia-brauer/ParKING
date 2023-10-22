@@ -19,7 +19,7 @@ import Slider from "@react-native-community/slider";
 
 const ParkingSpotInfo = ({ route }) => {
   const navigation = useNavigation();
-  const data = route?.params?.param;
+  const parkingData = route?.params?.param;
   const [price, setPrice] = useState("free");
   const [pricePerHour, setPricePerHour] = useState("");
   const [selectedId, setSelectedId] = useState();
@@ -32,22 +32,6 @@ const ParkingSpotInfo = ({ route }) => {
   const toggleModalReview = () => {
     setModalReviewVisible(!isModalReviewVisible);
   };
-
-  const radioButtons = useMemo(
-    () => [
-      {
-        id: "1", // acts as primary key, should be unique and non-empty string
-        label: "Free",
-        value: "option1",
-      },
-      {
-        id: "2",
-        label: "Paid",
-        value: "option2",
-      },
-    ],
-    []
-  );
 
   const handlePriceChange = (value) => {
     setPrice(value);
@@ -76,20 +60,30 @@ const ParkingSpotInfo = ({ route }) => {
           flex: 1,
         }}
       >
-        <View style={{ paddingHorizontal: 10, flexDirection:'row' }}>
+        <View style={{ paddingHorizontal: 10, flexDirection: "row" }}>
           <View>
             <Text
               style={{
                 paddingTop: 10,
                 fontWeight: "bold",
                 paddingHorizontal: 10,
-                fontSize: 20,
+                fontSize: 22,
               }}
             >
-              Ielas nosaukums
+              Ielas nosaukums:
+            </Text>
+            <Text
+              style={{
+                paddingTop: 10,
+                fontWeight: "bold",
+                paddingHorizontal: 10,
+                fontSize: 18,
+              }}
+            >
+              {route?.params?.param?.name}
             </Text>
           </View>
-          <View style={{ paddingHorizontal: 50, paddingVertical: 10, }}>
+          <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
             <Image source={require("../assets/report.png")} />
           </View>
         </View>
@@ -110,17 +104,21 @@ const ParkingSpotInfo = ({ route }) => {
             }}
           >
             <View>
-              <Text style={{ paddingTop: 10, paddingLeft: 10 }}>Price:</Text>
-              <Text style={{ paddingTop: 10, paddingLeft: 10 }}>Owned by:</Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
-                Spots available:
+                Price: {route?.params?.param?.price}
               </Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
-                Handicap spots:
+                Owned by: {route?.params?.param?.owner}
+              </Text>
+              <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
+                Spots available: {route?.params?.param?.spotsAvailable}
+              </Text>
+              <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
+                Handicap spots: {route?.params?.param?.HandicapSpots}
               </Text>
             </View>
             <TouchableOpacity>
-              <View style={{ paddingHorizontal: 140, paddingVertical: 40 }}>
+              <View style={{ paddingHorizontal: 80, paddingVertical: 40 }}>
                 <Image source={require("../assets/fav.png")} />
               </View>
             </TouchableOpacity>
@@ -137,7 +135,8 @@ const ParkingSpotInfo = ({ route }) => {
             paddingTop: 10,
           }}
         >
-          <Reviews />
+          <Text style={{ fontWeight: "bold", fontSize: 20, paddingLeft: 10, paddingVertical: 10 }}>Reviews:</Text>
+          <Text style={{paddingLeft: 10}}>{route?.params?.param?.reviews}</Text>
         </View>
         <View
           style={{
@@ -232,8 +231,8 @@ const ParkingSpotInfo = ({ route }) => {
         </View>
       </View>
 
-         {/*Review button */}
-      
+      {/*Review button */}
+
       <View
         style={{
           flexDirection: "row",
@@ -242,16 +241,16 @@ const ParkingSpotInfo = ({ route }) => {
       >
         <Pressable
           onPress={toggleModalReview}
-          style={{ paddingVertical: 50, paddingHorizontal: 35,  }}
+          style={{ paddingVertical: 50, paddingHorizontal: 35 }}
         >
           <Image source={require("../assets/review.png")}></Image>
           <Modal
             isVisible={isModalReviewVisible}
             onBackdropPress={() => setModalReviewVisible(false)}
-            style={{   backgroundColor: "white", alignItems: "center" }}
+            style={{ backgroundColor: "white", alignItems: "center" }}
           >
             <View style={{ backgroundColor: "white" }}>
-              <View style={{  paddingVertical: 10 }}>
+              <View style={{ paddingVertical: 10 }}>
                 <Text style={{ fontWeight: "bold", fontSize: 15 }}>
                   Write a review
                 </Text>
@@ -261,7 +260,7 @@ const ParkingSpotInfo = ({ route }) => {
             <View
               style={{
                 marginTop: 20,
-                
+
                 backgroundColor: "grey",
                 paddingVertical: 8,
                 borderRadius: 8,
@@ -270,7 +269,7 @@ const ParkingSpotInfo = ({ route }) => {
                 gap: 5,
               }}
             >
-              <View style={{ width:300, paddingVertical: 10 }}>
+              <View style={{ width: 300, paddingVertical: 10 }}>
                 <TextInput
                   placeholder="Title"
                   style={{ fontWeight: "bold", fontSize: 15 }}
@@ -278,14 +277,20 @@ const ParkingSpotInfo = ({ route }) => {
               </View>
             </View>
             <View style={{ backgroundColor: "grey" }}>
-              <View style={{ width:300, paddingVertical:20 }}>
+              <View style={{ width: 300, paddingVertical: 20 }}>
                 <TextInput
                   placeholder="Review message..."
                   style={{ fontWeight: "bold", fontSize: 15 }}
                 />
               </View>
 
-              <View style={{ alignSelf: "center", paddingVertical: 5, bottom:-100 }}>
+              <View
+                style={{
+                  alignSelf: "center",
+                  paddingVertical: 5,
+                  bottom: -100,
+                }}
+              >
                 <Pressable
                   style={{
                     alignItems: "center",
@@ -295,7 +300,7 @@ const ParkingSpotInfo = ({ route }) => {
                     borderRadius: 12,
                     elevation: 2,
                     backgroundColor: "#FE8F4E",
-                    
+
                     shadowColor: "black",
                   }}
                   onPress={{}}
@@ -317,7 +322,7 @@ const ParkingSpotInfo = ({ route }) => {
           </Modal>
         </Pressable>
 
-              {/*Review */}
+        {/*Review */}
 
         <Pressable
           style={{ paddingHorizontal: 35, paddingVertical: 50 }}

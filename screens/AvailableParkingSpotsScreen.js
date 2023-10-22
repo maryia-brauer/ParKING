@@ -8,32 +8,46 @@ import {
   TextInput,
   Pressable,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import PlacesInfo from "../component/PlacesInfo";
 import { db } from "../firebase";
 import { ref, onValue } from "firebase/database";
-
+import firestore from "@react-native-firebase/firestore";
+import { collection, addDocs, getDocs } from "../firebase";
 
 const AvailableParkingSpotsScreen = () => {
   const navigation = useNavigation();
-  const [data, setData] = useState([]);
+  const [parkingData, setData] = useState([]);
+  const [parkingData2, setData2] = useState([]);
 
-  
+  const getAvailableParkingSpots = async () => {
+    const querySnapshot = await getDocs(collection(db, "parking"));
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, doc.data());
+      setData({
+        ...doc.data(),
+        id: doc.id,
+      }); 
+         console.log();
+    });
+  };
+
+  const getAvailableParkingSpots2 = async () => {
+    const querySnapshot = await getDocs(collection(db, "parking"));
+    const parking = querySnapshot.docs.map((doc) => doc.data());
+    console.log(parking);
+    setData2(parking);
+  };
+
+
   useEffect(() => {
-    const starCountRef = ref(db, "parkingData/");
-    onValue(starCountRef, (snapshot) => {
-      const data = snapshot.val();
-      const places = Object.keys(data).map((key) => ({
-        id: key,
-        ...data[key],
-
-      }));
-      console.log(places);
-      setData(places);
-  })
+    getAvailableParkingSpots();
+    getAvailableParkingSpots2();
   }, []);
+
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -46,25 +60,25 @@ const AvailableParkingSpotsScreen = () => {
       </View>
       <View>
         <Text style={{ marginTop: 150, width: 350, paddingBottom: 5 }}>
-          Available parking spots: {data?.name}
+          Available parking spots:
         </Text>
       </View>
       <View>
         <View style={{ paddingHorizontal: 10, flexDirection: "row" }}>
           <View
             style={{
-              marginTop: 10,
+              marginTop: 14,
               borderRadius: 7,
               border: "solid black",
-              borderWidth: 0.5,
+              borderWidth: 1,
             }}
           >
             <TextInput
               style={{
-                fontSize: 20,
+                fontSize: 18,
                 width: 300,
                 backgroundColor: "white",
-                paddingVertical: 10,
+                paddingVertical: 8,
               }}
               placeholder="Search"
             />
@@ -77,24 +91,33 @@ const AvailableParkingSpotsScreen = () => {
           </View>
         </View>
       </View>
-      <ScrollView>
-        <Pressable >
+      <View style={{ paddingVertical: 100, paddingBottom: 10, 
+            marginTop: 20,
+            flexDirection: "colomn",
+            backgroundColor: "#E7E7E7",
+            paddingVertical: 10,
+            borderRadius: 9,
+            border: "solid black",
+            gap: 5,
+            width: 355,
+            }}> 
 
-              {data.map((item, index) => {
-                return (
-                  <PlacesInfo key={index} {...item} />
-                )
-              } )
-
-              }
-  
+        <Pressable>
+        {parkingData2.map((data, i) => {
+          return <PlacesInfo key={i} 
+          data={data} 
+          name={data.name}
+          available={data.spotsAvailable}/>;
+        }) }
         </Pressable>
-      </ScrollView>
 
+      </View>
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
+          paddingVertical: 150,
+          position: 'absolute",',
         }}
       >
         <Pressable onPress={() => navigation.navigate("AddPlace")}>

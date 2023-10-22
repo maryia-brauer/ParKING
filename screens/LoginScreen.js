@@ -13,7 +13,8 @@ import React, { useEffect, useState } from "react";
 import {useNavigation} from '@react-navigation/native';
 import { authFire } from "../firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-
+  import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
+  import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
