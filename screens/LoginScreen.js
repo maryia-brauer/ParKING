@@ -10,11 +10,10 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { authFire } from "../firebase";
 import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
-  import { initializeAuth, getReactNativePersistence } from 'firebase/auth';
-  import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
+
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,28 +24,29 @@ const LoginScreen = () => {
   };
   const auth = authFire;
 
-
   const goToMain = async () => {
     if (email && password) {
       try {
-        const response = await signInWithEmailAndPassword(auth, email, password)
+        const response = await signInWithEmailAndPassword(
+          auth,
+          email,
+          password
+        );
         console.log(response);
-        console.log('Logged in')
+        console.log("Logged in");
         if (response.user) {
-           navigation.replace("Main");
-           console.log('Logged in succes')
+          navigation.replace("Main");
+          console.log("Logged in succes");
         }
-
       } catch (error) {
-        console.log(error)
+        console.log(error);
+      }
+    } else {
+      alert("Please enter your email and password");
     }
-  }else{
-    alert("Please enter your email and password");
-  }
-  }
+  };
 
   //Email is test@test.com and password is test112
-
 
   return (
     <SafeAreaView
@@ -110,11 +110,11 @@ const LoginScreen = () => {
             placeholder="Password"
           />
           <TouchableOpacity>
-          <Image
-            style={{ position: "absolute", right: 5, height:32 }}
-            source={require("../assets/eye.png")}
-            onPress={togglePasswordVisibility}
-          />
+            <Image
+              style={{ position: "absolute", right: 5, height: 32 }}
+              source={require("../assets/eye.png")}
+              onPress={togglePasswordVisibility}
+            />
           </TouchableOpacity>
         </View>
         <View
@@ -131,11 +131,11 @@ const LoginScreen = () => {
         </View>
       </KeyboardAvoidingView>
       <View>
-      <Pressable onPress={() => goToMain() }>
-        <Image
-          style={{ top: 30, width: 300, borderRadius: 20 }}
-          source={require("../assets/login.png")}
-        />
+        <Pressable onPress={() => goToMain()}>
+          <Image
+            style={{ top: 30, width: 300, borderRadius: 20, shadowColor: "black",}}
+            source={require("../assets/login.png")}
+          />
         </Pressable>
       </View>
     </SafeAreaView>

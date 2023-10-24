@@ -1,8 +1,8 @@
-import { StyleSheet, Text, View, Image, Pressable } from 'react-native'
-import {React, useLayoutEffect} from 'react'
-import { useNavigation } from '@react-navigation/native';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import Favourites from '../component/Favourites';
+import { StyleSheet, Text, View, Image, Pressable, Button } from "react-native";
+import { React, useLayoutEffect } from "react";
+import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import Favourites from "../component/Favourites";
 import { authFire } from "../firebase";
 
 const ProfileScreen = () => {
@@ -11,49 +11,80 @@ const ProfileScreen = () => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-        headerShown: false,
+      headerShown: false,
     });
-}, []);
-
+  }, []);
 
   return (
-    <SafeAreaView     
+    <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
     >
-    <View style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "20%", backgroundColor: "orange" }}>
-    <Image  source={require("../assets/rect3.png")}/>
-     </View>
-    <View style={{ top: 130 }}>
-      <Text style={{color:'white', fontSize:50}}>Profile</Text>
-    </View>
-    <View style={{alignItems: "center"}}>
-      <Text 
-      style={{
-              fontSize: 30,
-              marginTop: 300,
-              width: 350,
+      <View
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "20%",
+          backgroundColor: "orange",
+        }}
+      >
+        <Image source={require("../assets/rect3.png")} />
+      </View>
+      <View style={{ top: 130 }}>
+        <Text style={{ color: "white", fontSize: 50 }}>Profile</Text>
+      </View>
+      <View style={{ alignItems: "center" }}>
+        <Text
+          style={{
+            fontSize: 30,
+            marginTop: 300,
+            width: 350,
+            fontWeight: "bold",
+            alignItems: "center",
+            left: 84,
+          }}
+        >
+          {" "}
+          {user?.email}{" "}
+        </Text>
+
+      </View>
+      <View style={{paddingTop: 40}}>
+        <Favourites />
+      </View>
+      <View style={{paddingVertical: 40 }}>
+        <Pressable
+          onPress={() => navigation.replace("Login")}
+          style={{
+            alignItems: "center",
+            justifyContent: "center",
+            paddingVertical: 11,
+            paddingHorizontal: 54,
+            borderRadius: 12,
+            elevation: 2,
+            backgroundColor: "#E7DFDA",
+           
+            shadowColor: "#0F0C0A",
+          }}
+        >
+          <Text
+            style={{
+              fontSize: 13,
+              lineHeight: 16,
               fontWeight: "bold",
-              alignItems:'center',
-              left: 84,
-            }}> {user?.email} </Text>
-            <Image source={{uri: user?.photoURL}} style={{width: 100, height: 100}}/>
-    </View>
-    <View>
-      <Favourites/>
-    </View>
-    <View>
-      <Pressable onPress={()=> navigation.replace("Login")}>
-        <Image
-          style={{ top: 100, width: 300, borderRadius: 20 }}
-          source={require("../assets/logout.png")}
-        />
+              letterSpacing: 0.25,
+              color: "#0F0C0A",
+            }}
+          >
+            LOGOUT
+          </Text>
         </Pressable>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
+export default ProfileScreen;
 
-export default ProfileScreen
-
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

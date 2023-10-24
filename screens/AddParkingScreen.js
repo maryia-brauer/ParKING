@@ -13,7 +13,7 @@ import {
 import React, { useState, useMemo } from "react";
 import { useNavigation } from "@react-navigation/native";
 import RadioGroup from 'react-native-radio-buttons-group';
-//import axios from 'axios';
+import Checkbox from 'expo-checkbox';
 
 const AddParkingScreen = ({ route }) => {
   const navigation = useNavigation();
@@ -21,6 +21,7 @@ const AddParkingScreen = ({ route }) => {
   const [price, setPrice] = useState("free");
   const [pricePerHour, setPricePerHour] = useState("");
   const [selectedId, setSelectedId] = useState();
+  const [isChecked, setChecked] = useState(false);
 
   const radioButtons = useMemo(() => ([
     {
@@ -80,7 +81,7 @@ const AddParkingScreen = ({ route }) => {
             }}
           >
             <TextInput
-              style={{ fontSize: 20, width: 200 }}
+              style={{ fontSize: 17, width: 200 }}
               placeholder="Add a street address"
             />
           </View>
@@ -100,7 +101,7 @@ const AddParkingScreen = ({ route }) => {
             }}
           >
             <TextInput
-              style={{ fontSize: 20, width: 200 }}
+              style={{ fontSize: 17, width: 200 }}
               placeholder="Add a street address"
             />
           </View>
@@ -115,14 +116,39 @@ const AddParkingScreen = ({ route }) => {
             onPress={setSelectedId}
             selectedId={selectedId}
         />
+        {selectedId === '2' && (
+          <View>          
+           <Text style={{ paddingTop: 10 }}>
+            How much per hour?
+          </Text>
+          <View
+            style={{
+              marginTop: 10,
+              backgroundColor: "white",
+              paddingVertical: 2,
+              borderRadius: 10,
+              border: "solid black",
+              borderWidth: 1,
+            }}
+          >
+
+            <TextInput
+              style={{ fontSize: 17, width: 200 }}
+              placeholder="Add price"
+            />
+          </View>
+          </View>
+          )}
         </View>
         <View style={{ paddingHorizontal: 20, paddingVertical: 20 }}>
           <View
             style={{
               marginTop: 10,
+              flexDirection: 'row',
             }}
           >
-            <Text style={{ paddingTop: 10 }}>How much per hour?</Text>
+          <Checkbox  color={isChecked ? 'grey' : 'black'} value={isChecked} onValueChange={setChecked}/>
+            <Text style={{paddingLeft: 10}} >There are disabled-designed spots</Text>
           </View>
         </View>
       </View>

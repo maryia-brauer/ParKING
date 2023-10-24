@@ -7,8 +7,6 @@ import {
   ScrollView,
   TextInput,
   Pressable,
-  TouchableOpacity,
-  FlatList,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
@@ -20,20 +18,7 @@ import { collection, addDocs, getDocs } from "../firebase";
 
 const AvailableParkingSpotsScreen = () => {
   const navigation = useNavigation();
-  const [parkingData, setData] = useState([]);
   const [parkingData2, setData2] = useState([]);
-
-  const getAvailableParkingSpots = async () => {
-    const querySnapshot = await getDocs(collection(db, "parking"));
-    querySnapshot.forEach((doc) => {
-      console.log(doc.id, doc.data());
-      setData({
-        ...doc.data(),
-        id: doc.id,
-      }); 
-         console.log();
-    });
-  };
 
   const getAvailableParkingSpots2 = async () => {
     const querySnapshot = await getDocs(collection(db, "parking"));
@@ -42,9 +27,7 @@ const AvailableParkingSpotsScreen = () => {
     setData2(parking);
   };
 
-
   useEffect(() => {
-    getAvailableParkingSpots();
     getAvailableParkingSpots2();
   }, []);
 
@@ -91,27 +74,32 @@ const AvailableParkingSpotsScreen = () => {
           </View>
         </View>
       </View>
-      <View style={{ paddingVertical: 100, paddingBottom: 10, 
-            marginTop: 20,
-            flexDirection: "colomn",
-            backgroundColor: "#E7E7E7",
-            paddingVertical: 10,
-            borderRadius: 9,
-            border: "solid black",
-            gap: 5,
-            width: 355,
-            }}> 
-
+      <ScrollView
+        style={{
+          paddingBottom: 10,
+          marginTop: 30,
+          flexDirection: "colomn",
+          backgroundColor: "#E7E7E7",
+          paddingVertical: 15,
+          borderRadius: 9,
+          border: "solid black",
+          gap: 5,
+          width: 355,
+        }}
+      >
         <Pressable>
-        {parkingData2.map((data, i) => {
-          return <PlacesInfo key={i} 
-          data={data} 
-          name={data.name}
-          available={data.spotsAvailable}/>;
-        }) }
+          {parkingData2.map((data, i) => {
+            return (
+              <PlacesInfo
+                key={i}
+                data={data}
+                name={data.name}
+                available={data.spotsAvailable}
+              />
+            );
+          })}
         </Pressable>
-
-      </View>
+      </ScrollView>
       <View
         style={{
           flexDirection: "row",

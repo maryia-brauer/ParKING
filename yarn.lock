@@ -3691,6 +3691,11 @@ expo-asset@~8.10.1:
     path-browserify "^1.0.0"
     url-parse "^1.5.9"
 
+expo-checkbox@~2.4.0:
+  version "2.4.0"
+  resolved "https://registry.yarnpkg.com/expo-checkbox/-/expo-checkbox-2.4.0.tgz#5d5bb82117f4d781eb1d4db0ff96e1f0a4a0547a"
+  integrity sha512-ZEe79B73I+NDkLZQ2pR1E5rv9ey1oleNI/s2/Jdb9zKWztS0KVU2K+drFn2t/zyoSbR1U+CNwik2v7h6JxrXcA==
+
 expo-constants@~14.4.2:
   version "14.4.2"
   resolved "https://registry.npmjs.org/expo-constants/-/expo-constants-14.4.2.tgz"
@@ -3717,6 +3722,11 @@ expo-keep-awake@~12.3.0:
   version "12.3.0"
   resolved "https://registry.npmjs.org/expo-keep-awake/-/expo-keep-awake-12.3.0.tgz"
   integrity sha512-ujiJg1p9EdCOYS05jh5PtUrfiZnK0yyLy+UewzqrjUqIT8eAGMQbkfOn3C3fHE7AKd5AefSMzJnS3lYZcZYHDw==
+
+expo-linear-gradient@~12.3.0:
+  version "12.3.0"
+  resolved "https://registry.yarnpkg.com/expo-linear-gradient/-/expo-linear-gradient-12.3.0.tgz#7abd8fedbf0138c86805aebbdfbbf5e5fa865f19"
+  integrity sha512-f9e+Oxe5z7fNQarTBZXilMyswlkbYWQHONVfq8MqmiEnW3h9XsxxmVJLG8uVQSQPUsbW+x1UUT/tnU6mkMWeLg==
 
 expo-modules-autolinking@1.5.1:
   version "1.5.1"
@@ -6185,6 +6195,11 @@ react-native-basic-modal@^1.0.2:
   dependencies:
     react-native-modal ">= 11.4.0"
 
+react-native-linear-gradient@^2.8.3:
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/react-native-linear-gradient/-/react-native-linear-gradient-2.8.3.tgz#9a116649f86d74747304ee13db325e20b21e564f"
+  integrity sha512-KflAXZcEg54PXkLyflaSZQ3PJp4uC4whM7nT/Uot9m0e/qxFV3p6uor1983D1YOBJbJN7rrWdqIjq0T42jOJyA==
+
 react-native-material-dialog@^0.7.7:
   version "0.7.7"
   resolved "https://registry.yarnpkg.com/react-native-material-dialog/-/react-native-material-dialog-0.7.7.tgz#08b9e2144c45b9108ffec9a79b60276913901824"
@@ -6219,6 +6234,11 @@ react-native-screens@~3.22.0:
   dependencies:
     react-freeze "^1.0.0"
     warn-once "^0.1.0"
+
+react-native-star@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-star/-/react-native-star-1.0.0.tgz#a19a344d17367604beadbac8d5ef79a8ed1e1625"
+  integrity sha512-BrQ6mNR70oiwGGHfG/wWOtj+Q0JFJfmpG80LGZnrWGwGffoIwMYltZY0ccl/4Ig5fn0/BHWFr+0JKeVUHmuwYg==
 
 react-native-typography@^1.0.3:
   version "1.4.1"

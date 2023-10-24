@@ -25,6 +25,8 @@ const ParkingSpotInfo = ({ route }) => {
   const [selectedId, setSelectedId] = useState();
   const [isModalVisible, setModalVisible] = useState(false);
   const [isModalReviewVisible, setModalReviewVisible] = useState(false);
+  const [isLiked, setIsLiked] = useState(false);
+  const [icon, setIcon] = useState(require("../assets/starB.png"));
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -38,6 +40,19 @@ const ParkingSpotInfo = ({ route }) => {
     if (value === "paid") {
       setPricePerHour("");
     }
+  };
+
+  const handleLikeButtonPress = () => {
+    if (!isLiked) {
+      setIcon(require("../assets/starF.png"));
+    } else {
+      setIcon(require("../assets/starB.png"));
+    }
+
+    setIsLiked(!isLiked);
+    console.log(isLiked);
+    // Add the place to favorites
+    // ...
   };
 
   return (
@@ -105,7 +120,7 @@ const ParkingSpotInfo = ({ route }) => {
           >
             <View>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
-                Price: {route?.params?.param?.price}
+                Price: {route?.params?.param?.price} Euro
               </Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
                 Owned by: {route?.params?.param?.owner}
@@ -117,9 +132,9 @@ const ParkingSpotInfo = ({ route }) => {
                 Handicap spots: {route?.params?.param?.HandicapSpots}
               </Text>
             </View>
-            <TouchableOpacity>
-              <View style={{ paddingHorizontal: 80, paddingVertical: 40 }}>
-                <Image source={require("../assets/fav.png")} />
+            <TouchableOpacity onPress={handleLikeButtonPress}>
+              <View style={{ paddingHorizontal: 70, paddingVertical: 40 }}>
+                <Image source={icon} />
               </View>
             </TouchableOpacity>
           </View>
@@ -135,8 +150,19 @@ const ParkingSpotInfo = ({ route }) => {
             paddingTop: 10,
           }}
         >
-          <Text style={{ fontWeight: "bold", fontSize: 20, paddingLeft: 10, paddingVertical: 10 }}>Reviews:</Text>
-          <Text style={{paddingLeft: 10}}>{route?.params?.param?.reviews}</Text>
+          <Text
+            style={{
+              fontWeight: "bold",
+              fontSize: 20,
+              paddingLeft: 10,
+              paddingVertical: 10,
+            }}
+          >
+            Reviews:
+          </Text>
+          <Text style={{ paddingLeft: 10 }}>
+            {route?.params?.param?.reviews}
+          </Text>
         </View>
         <View
           style={{
@@ -147,7 +173,7 @@ const ParkingSpotInfo = ({ route }) => {
         >
           <Pressable
             onPress={() => navigation.navigate("Available")}
-            style={{ paddingVertical: 40, paddingHorizontal: 10 }}
+            style={{ paddingVertical: 50, paddingHorizontal: 10 }}
           >
             <Image source={require("../assets/here.png")}></Image>
           </Pressable>
@@ -155,7 +181,7 @@ const ParkingSpotInfo = ({ route }) => {
           {/*Reserve button*/}
 
           <TouchableOpacity
-            style={{ paddingHorizontal: 10, paddingVertical: 40 }}
+            style={{ paddingHorizontal: 10, paddingVertical: 50 }}
           >
             <Pressable onPress={toggleModal}>
               <Image
@@ -186,11 +212,12 @@ const ParkingSpotInfo = ({ route }) => {
                   <Slider
                     style={{ width: 200, height: 30, alignSelf: "center" }}
                     minimumValue={0}
-                    maximumValue={1}
+                    maximumValue={10}
                     minimumTrackTintColor="#E7DFDA"
                     maximumTrackTintColor="#000000"
                     thumbTintColor="orange"
                   />
+
                   <View style={{ alignSelf: "center" }}>
                     <Text style={{ fontSize: 11, paddingVertical: 18 }}>
                       2h | $6.80 [placeholders]
