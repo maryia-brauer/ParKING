@@ -23,6 +23,12 @@ const AddParkingScreen = ({ route }) => {
   const [selectedId, setSelectedId] = useState();
   const [isChecked, setChecked] = useState(false);
 
+  const [address, setAddress] = useState("");
+  const [maxSpots, setMaxSpots] = useState(0);
+  const [isFree, setIsFree] = useState(true); 
+  const [isPaid, setIsPaid] = useState(false); 
+  const [spotPrice, setSpotPrice] = useState(0); 
+
   const radioButtons = useMemo(() => ([
     {
         id: '1', 
@@ -82,6 +88,7 @@ const AddParkingScreen = ({ route }) => {
           >
             <TextInput
               style={{ fontSize: 17, width: 200 }}
+
               placeholder="Add a street address"
             />
           </View>
@@ -102,7 +109,9 @@ const AddParkingScreen = ({ route }) => {
           >
             <TextInput
               style={{ fontSize: 17, width: 200 }}
-              placeholder="Add a street address"
+              value={maxSpots}
+              onChangeText={(text) => setMaxSpots(text)}
+              placeholder="How many parking spots"
             />
           </View>
         </View>
@@ -131,11 +140,10 @@ const AddParkingScreen = ({ route }) => {
               borderWidth: 1,
             }}
           >
-
             <TextInput
-              style={{ fontSize: 17, width: 200 }}
-              placeholder="Add price"
-            />
+              style={{ fontSize: 17, width: 200 }}        
+              placeholder="Add a price per hour"
+         />
           </View>
           </View>
           )}

@@ -28,7 +28,8 @@ const ParkingSpotInfo = ({ route }) => {
   const [isLiked, setIsLiked] = useState(false);
   const [icon, setIcon] = useState(require("../assets/starB.png"));
   const [reviewData, setReviewData] = useState([]);
-
+  const [starRating, setStarRating] = useState(0);
+  const [isReportModalVisible, setReportModalVisible] = useState(false);
 
   
 
@@ -50,7 +51,9 @@ const ParkingSpotInfo = ({ route }) => {
   const toggleModalReview = () => {
     setModalReviewVisible(!isModalReviewVisible);
   };
-
+  const toggleReportModal = () => {
+    setReportModalVisible(!isReportModalVisible);
+  };
   const handlePriceChange = (value) => {
     setPrice(value);
     if (value === "paid") {
@@ -115,7 +118,9 @@ const ParkingSpotInfo = ({ route }) => {
             </Text>
           </View>
           <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
-            <Image source={require("../assets/report.png")} />
+          <TouchableOpacity onPress={toggleReportModal}>
+              <Image source={require("../assets/report.png")} />
+            </TouchableOpacity>
           </View>
         </View>
         <View
@@ -228,7 +233,7 @@ const ParkingSpotInfo = ({ route }) => {
                   </View>
                   <View style={{ alignSelf: "center" }}>
                     <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                      Parking space address[placeholder]
+                      Parking space address
                     </Text>
                   </View>
                   <View style={{ alignSelf: "center" }}>
@@ -246,7 +251,7 @@ const ParkingSpotInfo = ({ route }) => {
                   />
                   <View style={{ alignSelf: "center" }}>
                     <Text style={{ fontSize: 11, paddingVertical: 18 }}>
-                      2h | $6.80 [placeholders]
+                      2h | $6.80 
                     </Text>
                   </View>
                   <View style={{ alignSelf: "center", paddingVertical: 5 }}>
@@ -421,6 +426,116 @@ const ParkingSpotInfo = ({ route }) => {
   </View>
 </Modal>
         </Pressable>
+        <Modal
+          animationType="slide" // You can change the animation type as per your preference
+          transparent={true}
+          isVisible={isReportModalVisible}
+          onBackdropPress={() => isReportModalVisible(false)}
+          onRequestClose={() => {
+            // Handle modal closing (optional)
+            setReportModalVisible(false);
+          }}
+        >
+          <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+            <View style={{ backgroundColor: "white", padding: 20, borderRadius: 10 }}>
+              <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
+                Write a report
+              </Text>
+            <View style={{ backgroundColor: "white" }}>
+              <Text style={{ fontWeight: "bold", fontSize: 12, paddingLeft: 10, paddingVertical: 10 }}>
+                Quick report
+              </Text>
+                            <TouchableOpacity
+                              onPress={toggleReportModal}
+                              style={{
+                                position: "absolute",
+                                top: -40,
+                                right: 0,
+                              }}
+                            >
+                              <Image
+                                source={require("../assets/filterCloseButton.png")}
+                                style={{ width: 16, height: 16 }}
+                              />
+                            </TouchableOpacity>
+                            {}
+              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <View style={{ padding: 0 }}>
+                  <TouchableOpacity>
+                    <Image source={require("../assets/spaceTaken.png")} style={{ width: 110, height: 40,marginBottom:10 }} />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity>
+                    <Image source={require("../assets/brokenParking.png")} style={{ width: 110, height: 40, marginBottom:10 }} />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ padding: 0 }}>
+                  <TouchableOpacity>
+                    <Image source={require("../assets/safetyConcerns.png")} style={{ width: 110, height: 40, marginBottom:10 }} />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity>
+                    <Image source={require("../assets/spaceFree.png")} style={{ width: 110, height: 40, marginBottom:10 }} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <View style={{ padding: 0 }}>
+                  <TouchableOpacity>
+                    <Image source={require("../assets/lackSigns.png")} style={{ width: 110, height: 40, marginBottom:10 }} />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity>
+                    <Image source={require("../assets/damagedPavement.png")} style={{ width: 110, height: 40, marginBottom:10 }} />
+                  </TouchableOpacity>
+                </View>
+
+                <View style={{ padding: 0 }}>
+                  <TouchableOpacity>
+                    <Image source={require("../assets/construction.png")} style={{ width: 110, height: 40, marginBottom:10 }} />
+                  </TouchableOpacity>
+
+                  <TouchableOpacity>
+                    <Image source={require("../assets/poorLightning.png")} style={{ width: 110, height: 40, marginBottom:10 }} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+
+              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                <View style={{ padding: 5 }}>
+                  <TouchableOpacity>
+                    <Image source={require("../assets/falseSpot.png")} style={{ width: 233, height: 40 }} />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </View>
+              {/* Add your report form fields or content here */}
+              {/* For example: */}
+              <Text style={{ fontSize: 12, fontWeight: "bold", marginBottom: 10 }}>
+                Write a report
+              </Text>
+              <TextInput
+                placeholder="More info.. (optional)"
+                style={{ borderWidth: 1, borderColor: "gray", padding: 10, height: 71, borderRadius: 10, backgroundColor: "D9D9D9",}}
+                // Add onChangeText and value props to handle input
+              />
+              <TouchableOpacity
+                onPress={() => {
+                  // Handle report submission
+                  // You can make an API call or perform any necessary actions
+                  toggleReportModal(); // Close the modal after submission
+                }}
+              >
+                <Image source={require("../assets/submit.png")} style={{ width: 154, height: 31, alignSelf: "center", marginTop: 20}} />
+              </TouchableOpacity>
+
+            </View>
+          </View>
+        </Modal>
+
+        
 
         {/*Review */}
 

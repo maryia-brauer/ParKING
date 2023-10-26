@@ -11,16 +11,13 @@ import {
 import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import PlacesInfo from "../component/PlacesInfo";
-import { db } from "../firebase";
-import { ref, onValue } from "firebase/database";
-import firestore from "@react-native-firebase/firestore";
-import { collection, addDocs, getDocs } from "../firebase";
-import axios from "axios";
+
 
 
 const AvailableParkingSpotsScreen = () => {
   const navigation = useNavigation();
   const [parkingData, setData] = useState([]);
+  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
 
    useEffect(() => {
     fetch('http://rhomeserver.ddns.net:8086/api/parking/get/all')
@@ -75,13 +72,15 @@ const AvailableParkingSpotsScreen = () => {
       </View>
       <ScrollView
         style={{
+          paddingBottom: 10,
           marginTop: 30,
-          flexDirection: "colomn",
+          flexDirection: "column",
           backgroundColor: "#E7E7E7",
           paddingVertical: 15,
           borderRadius: 9,
-          border: "solid black",
-          gap: 5,
+          borderColor: "black",
+          borderWidth: 1,
+          margin: 5,
           width: 355,
         }}
       >

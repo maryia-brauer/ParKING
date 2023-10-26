@@ -11,17 +11,15 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-import axios from 'axios';
+import axios from "axios";
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigation = useNavigation();
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [user, setUser] = useState([]);
-
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!passwordVisible);
@@ -31,37 +29,32 @@ const LoginScreen = () => {
     password: password,
   };
 
-
-  const stringifiedData = JSON.stringify(userData);
-
-
+  
 
   const handleLogin = (email, password) => {
     axios
-      .post(`http://rhomeserver.ddns.net:8086/api/client/login?Email=${email}&password=${password}`)
+      .post(
+        `http://rhomeserver.ddns.net:8086/api/client/login?Email=${email}&password=${password}`
+      )
       .then((response) => {
-        
         console.log(response.data);
         navigation.replace("Main");
+        const stringifiedData = JSON.stringify(email);
+        AsyncStorage.setItem("myKey", stringifiedData)
+          .then(() => {
+            console.log("Data saved successfully");
+            console.log(stringifiedData);
+          })
+          .catch((error) => {
+            console.error("Error saving data:", error);
+          });
       })
       .catch((error) => {
         console.log(error);
       });
   };
+ 
 
-
- /* useEffect(() => {
-   AsyncStorage.setItem('myKey', stringifiedData)
-  .then(() => {
-    console.log('Data saved successfully');
-    console.log(stringifiedData);
-  })
-  .catch((error) => {
-    console.error('Error saving data:', error);
-  });
-  }, []);
-
-*/
   return (
     <SafeAreaView
       style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
@@ -147,7 +140,12 @@ const LoginScreen = () => {
       <View>
         <Pressable onPress={() => handleLogin(email, password)}>
           <Image
-            style={{ top: 30, width: 300, borderRadius: 20, shadowColor: "black",}}
+            style={{
+              top: 30,
+              width: 300,
+              borderRadius: 20,
+              shadowColor: "black",
+            }}
             source={require("../assets/login.png")}
           />
         </Pressable>

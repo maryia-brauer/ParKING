@@ -13,9 +13,9 @@ const PlacesInfo = ({data, address, maxSpotsCount}) => {
         <View >
         <View style={{ paddingHorizontal: 10}}>
         <Text style={{fontWeight: "bold", fontSize:20 }}> {data.address}</Text>
-        <Text style={{paddingHorizontal: 5}}>Available spots: {maxSpotsCount}</Text>
+        <Text style={{paddingHorizontal: 5}}>Max spots available: {maxSpotsCount}</Text>
         </View>
-        <View style={{ paddingHorizontal: 250, bottom: 45}}>
+        <View style={{ paddingHorizontal: 280, bottom: 45}}>
         <Image  source={require("../assets/eye.png")}/>
         </View>
         </View>

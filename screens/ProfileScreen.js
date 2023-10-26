@@ -10,8 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const ProfileScreen = () => {
   const navigation = useNavigation();
   const [user, setUserData] = useState([]);
-  const [currentUser, setCurrentUser] = useState([]);
-
+  const [currentUser, setCurrentUser] = useState("");
 
 
   useEffect(() => {
@@ -22,18 +21,6 @@ const ProfileScreen = () => {
     console.log(user);
   }, []);
 
-  const getDataAndUpdateState = async () => {
-    try {
-      const stringifiedData = await AsyncStorage.getItem('myKey');
-      if (stringifiedData !== null) {
-        const data = JSON.parse(stringifiedData);
-        setCurrentUser(data);
-        console.log('User data retrieved from AsyncStorage:', data);
-      }
-    } catch (error) {
-      console.error('Error retrieving data:', error);
-    }
-  };
 
 
   useEffect(() => {
@@ -41,6 +28,7 @@ const ProfileScreen = () => {
     .then((stringifiedData) => {
       if (stringifiedData !== null) {
         const data = JSON.parse(stringifiedData);
+        console.log('User data retrieved from AsyncStorage:', data);
         setCurrentUser(data); 
         console.log(currentUser)// Update the state with the data
       }
@@ -50,6 +38,8 @@ const ProfileScreen = () => {
     });
   }, []);
    
+
+
 
 
   useLayoutEffect(() => {
@@ -89,8 +79,7 @@ const ProfileScreen = () => {
             left: 84,
           }}
         >
-          {" "}
-          {user?.email}{" "}
+        {currentUser}
         </Text>
 
       </View>
