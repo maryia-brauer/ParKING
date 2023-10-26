@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -7,29 +8,64 @@ import {
   ScrollView,
   TextInput,
   Pressable,
+  Modal,
+  TouchableOpacity,
 } from "react-native";
-import React, { useState, useEffect } from "react";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import PlacesInfo from "../component/PlacesInfo";
 import { db } from "../firebase";
-import { ref, onValue } from "firebase/database";
-import firestore from "@react-native-firebase/firestore";
-import { collection, addDocs, getDocs } from "../firebase";
+import { collection, getDocs, query, where } from "../firebase";
 
 const AvailableParkingSpotsScreen = () => {
   const navigation = useNavigation();
   const [parkingData2, setData2] = useState([]);
+  const [isFilterModalVisible, setFilterModalVisible] = useState(false);
+  const [selectedFilters, setSelectedFilters] = useState([]);
 
   const getAvailableParkingSpots2 = async () => {
-    const querySnapshot = await getDocs(collection(db, "parking"));
+    const spotsCollection = collection(db, "parking");
+    let filteredQuery = spotsCollection;
+
+    selectedFilters.forEach((filter) => {
+      filteredQuery = query(filteredQuery, where(filter.field, filter.operator, filter.value));
+    });
+
+    const querySnapshot = await getDocs(filteredQuery);
     const parking = querySnapshot.docs.map((doc) => doc.data());
-    console.log(parking);
     setData2(parking);
   };
 
   useEffect(() => {
     getAvailableParkingSpots2();
-  }, []);
+  }, [selectedFilters]);
+
+  const toggleFilterModal = () => {
+    setFilterModalVisible(!isFilterModalVisible);
+  };
+
+  const handleFilterAction = (filterType) => {
+    let filter = {};
+    switch (filterType) {
+      case "zeroCost":
+        filter = { field: "price", operator: "==", value: 0 };
+        break;
+      case "payPerHour":
+        filter = { field: "price", operator: ">", value: 0 };
+        break;
+      case "forDisabled":
+        filter = { field: "HandicapSpots", operator: ">=", value: 1 };
+        break;
+      case "clearAllFilters":
+        setSelectedFilters([]);
+        break;
+      default:
+        break;
+    }
+
+    if (filter.field) {
+      setSelectedFilters([...selectedFilters, filter]);
+    }
+  };
 
   return (
     <SafeAreaView
@@ -52,8 +88,9 @@ const AvailableParkingSpotsScreen = () => {
             style={{
               marginTop: 14,
               borderRadius: 7,
-              border: "solid black",
+              borderColor: "black",
               borderWidth: 1,
+              marginLeft: 30,
             }}
           >
             <TextInput
@@ -66,68 +103,154 @@ const AvailableParkingSpotsScreen = () => {
               placeholder="Search"
             />
           </View>
-          <View style={{ paddingHorizontal: 4, paddingVertical: 10 }}>
-            <Image
-              style={{ justifyContent: "space-between" }}
-              source={require("../assets/filter.png")}
-            />
+          <View style={{ marginRight: 20, paddingHorizontal: 5, paddingVertical: 0}}>
+            <TouchableOpacity onPress={toggleFilterModal} style={{ marginTop: 10 }}>
+              <Image
+                style={{ justifyContent: "space-between" }}
+                source={require("../assets/filter.png")}
+              />
+            </TouchableOpacity>
           </View>
         </View>
       </View>
+
       <ScrollView
         style={{
           paddingBottom: 10,
           marginTop: 30,
-          flexDirection: "colomn",
+          flexDirection: "column",
           backgroundColor: "#E7E7E7",
           paddingVertical: 15,
           borderRadius: 9,
-          border: "solid black",
-          gap: 5,
+          borderColor: "black",
+          borderWidth: 1,
+          margin: 5,
           width: 355,
         }}
       >
-        <Pressable>
-          {parkingData2.map((data, i) => {
-            return (
-              <PlacesInfo
-                key={i}
-                data={data}
-                name={data.name}
-                available={data.spotsAvailable}
-              />
-            );
-          })}
-        </Pressable>
+        {parkingData2.map((data, i) => {
+          return (
+            <PlacesInfo
+              key={i}
+              data={data}
+              name={data.name}
+              available={data.spotsAvailable}
+            />
+          );
+        })}
       </ScrollView>
+
+      <Modal
+        animationType="slide"
+        transparent={true}
+                  isVisible={isFilterModalVisible}
+                  onBackdropPress={() => isFilterModalVisible(false)}
+        visible={isFilterModalVisible}
+        onRequestClose={toggleFilterModal}
+
+      >
+        <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
+          <View
+            style={{
+              width: 327,
+              height: 362,
+              backgroundColor: "#D9D9D9",
+              borderRadius: 10,
+              alignItems: "center",
+            }}
+          >
+            <Text style={{ fontSize: 20, fontWeight: "bold", marginBottom: 10 }}>
+              Filter By:
+            </Text>
+            <TouchableOpacity
+              onPress={toggleFilterModal}
+              style={{
+                position: "absolute",
+                top: 10,
+                right: 10,
+              }}
+            >
+              <Image
+                source={require("../assets/filterCloseButton.png")}
+                style={{ width: 16, height: 16 }}
+              />
+            </TouchableOpacity>
+            {}
+            <TouchableOpacity
+              style={styles.filterButtonContainer}
+              onPress={() => handleFilterAction("zeroCost")}
+            >
+              <Image
+                source={require("../assets/zeroCostButton.png")}
+                style={{ width: 301, height: 63 }}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.filterButtonContainer}
+              onPress={() => handleFilterAction("payPerHour")}
+            >
+              <Image
+                source={require("../assets/payperhourButton.png")}
+                style={{ width: 301, height: 63 }}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.filterButtonContainer}
+              onPress={() => handleFilterAction("forDisabled")}
+            >
+              <Image
+                source={require("../assets/forDisabledButton.png")}
+                style={{ width: 301, height: 63 }}
+              />
+            </TouchableOpacity>
+
+            <View style={{ marginTop: 10 }}>
+              <TouchableOpacity
+                style={styles.clearAllFilterContainer}
+                onPress={() => handleFilterAction("clearAllFilters")}
+              >
+                <Image
+                  source={require("../assets/clearAllFilter.png")}
+                  style={{ width: 301, height: 43 }}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
       <View
         style={{
           flexDirection: "row",
           justifyContent: "space-between",
-          paddingVertical: 150,
-          position: 'absolute",',
+          paddingVertical: 20,
         }}
       >
         <Pressable onPress={() => navigation.navigate("AddPlace")}>
-          <Image
-            style={{ bottom: 100 }}
-            source={require("../assets/add.png")}
-          ></Image>
+          <Image source={require("../assets/add.png")} />
         </Pressable>
         <Pressable
           style={{ paddingHorizontal: 20 }}
           onPress={() => navigation.navigate("CityScreen")}
         >
-          <Image
-            style={{ bottom: 100 }}
-            source={require("../assets/back.png")}
-          ></Image>
+          <Image source={require("../assets/back.png")} />
         </Pressable>
       </View>
     </SafeAreaView>
   );
 };
 
-export default AvailableParkingSpotsScreen;
+const styles = StyleSheet.create({
+  filterButtonContainer: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+  clearAllFilterContainer: {
+    alignItems: "center",
+    marginBottom: 10,
+  },
+});
 
-const styles = StyleSheet.create({});
+export default AvailableParkingSpotsScreen;

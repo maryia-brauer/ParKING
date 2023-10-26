@@ -15,7 +15,7 @@ const PlacesInfo = ({data, name, available}) => {
         <Text style={{fontWeight: "bold", fontSize:20 }}>{name}</Text>
         <Text>Available spots: {available}</Text>
         </View>
-        <View style={{ paddingHorizontal: 250, bottom: 45}}>
+        <View style={{ paddingHorizontal: 280, bottom: 45}}>
         <Image  source={require("../assets/eye.png")}/>
         </View>
         </View>
