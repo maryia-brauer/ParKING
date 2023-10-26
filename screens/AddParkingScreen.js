@@ -25,7 +25,7 @@ const AddParkingScreen = ({ route }) => {
 
   const radioButtons = useMemo(() => ([
     {
-        id: '1', // acts as primary key, should be unique and non-empty string
+        id: '1', 
         label: 'Free',
         value: 'option1'
     },

@@ -11,7 +11,7 @@ import {
   Radio,
   Button,
 } from "react-native";
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import Reviews from "../component/Reviews";
 import Modal from "react-native-modal";
@@ -27,6 +27,22 @@ const ParkingSpotInfo = ({ route }) => {
   const [isModalReviewVisible, setModalReviewVisible] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const [icon, setIcon] = useState(require("../assets/starB.png"));
+  const [reviewData, setReviewData] = useState([]);
+
+
+  
+
+  const url = 'http://rhomeserver.ddns.net:8086/api/review/get/all';
+
+  useEffect(() => {
+    const userId = route?.params?.param?.partnerId;
+    fetch('http://rhomeserver.ddns.net:8086/api/review/get/all')
+    .then(res => res.json())
+    .then(data => setReviewData(data))
+    .catch(err => console.log(err));
+    console.log(reviewData);
+    console.log(userId);
+  }, []);
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -95,7 +111,7 @@ const ParkingSpotInfo = ({ route }) => {
                 fontSize: 18,
               }}
             >
-              {route?.params?.param?.name}
+              {route?.params?.param?.address}
             </Text>
           </View>
           <View style={{ paddingHorizontal: 10, paddingVertical: 10 }}>
@@ -123,17 +139,20 @@ const ParkingSpotInfo = ({ route }) => {
                 Price: {route?.params?.param?.price} Euro
               </Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
-                Owned by: {route?.params?.param?.owner}
+                Owned by: {route?.params?.param?.partnerId}
               </Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
-                Spots available: {route?.params?.param?.spotsAvailable}
+                Spots taken: {route?.params?.param?.spotsTaken}
               </Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
-                Handicap spots: {route?.params?.param?.HandicapSpots}
+                Handicap spots available: {route?.params?.param?.isDisabled ? "Yes" : "No"}
+              </Text>
+              <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
+                IsPremium: {route?.params?.param?.isPremium ? "Yes" : "No"}
               </Text>
             </View>
             <TouchableOpacity onPress={handleLikeButtonPress}>
-              <View style={{ paddingHorizontal: 70, paddingVertical: 40 }}>
+              <View style={{ paddingHorizontal: 50, paddingVertical: 40 }}>
                 <Image source={icon} />
               </View>
             </TouchableOpacity>
@@ -161,7 +180,15 @@ const ParkingSpotInfo = ({ route }) => {
             Reviews:
           </Text>
           <Text style={{ paddingLeft: 10 }}>
-            {route?.params?.param?.reviews}
+          
+            {reviewData.map((data, i) => {
+              return (
+                <Reviews
+                  key={i}
+                  data={data}
+                  partnerId={route?.params?.param?.partnerId}/>
+            );
+            })}
           </Text>
         </View>
         <View
@@ -217,7 +244,6 @@ const ParkingSpotInfo = ({ route }) => {
                     maximumTrackTintColor="#000000"
                     thumbTintColor="orange"
                   />
-
                   <View style={{ alignSelf: "center" }}>
                     <Text style={{ fontSize: 11, paddingVertical: 18 }}>
                       2h | $6.80 [placeholders]
@@ -271,82 +297,129 @@ const ParkingSpotInfo = ({ route }) => {
           style={{ paddingVertical: 50, paddingHorizontal: 35 }}
         >
           <Image source={require("../assets/review.png")}></Image>
-          <Modal
-            isVisible={isModalReviewVisible}
-            onBackdropPress={() => setModalReviewVisible(false)}
-            style={{ backgroundColor: "white", alignItems: "center" }}
-          >
-            <View style={{ backgroundColor: "white" }}>
-              <View style={{ paddingVertical: 10 }}>
-                <Text style={{ fontWeight: "bold", fontSize: 15 }}>
-                  Write a review
-                </Text>
-              </View>
-            </View>
+<Modal
+  animationType="slide"
+  isVisible={isModalReviewVisible}
+  onBackdropPress={() => setModalReviewVisible(false)}
+  style={{
+    flex: 1,
+    backgroundColor: "white",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 50,
+    borderRadius: 10,
+  }}
+>
+  <TouchableOpacity
+    onPress={toggleModalReview}
+    style={{
+      position: "absolute",
+      top: 15,
+      right: 15,
+    }}
+  >
+    <Image
+      source={require("../assets/filterCloseButton.png")}
+      style={{ width: 16, height: 16 }}
+    />
+  </TouchableOpacity>
+  <View style={{ backgroundColor: "white" }}>
+    <View style={{ paddingVertical: 10 }}>
+      <Text style={{ fontWeight: "bold", fontSize: 22 }}>
+        Write a review
+      </Text>
+    </View>
+  </View>
 
-            <View
-              style={{
-                marginTop: 20,
-
-                backgroundColor: "grey",
-                paddingVertical: 8,
-                borderRadius: 8,
-                border: "solid black",
-                borderWidth: 0.5,
-                gap: 5,
-              }}
-            >
-              <View style={{ width: 300, paddingVertical: 10 }}>
-                <TextInput
-                  placeholder="Title"
-                  style={{ fontWeight: "bold", fontSize: 15 }}
-                />
-              </View>
-            </View>
-            <View style={{ backgroundColor: "grey" }}>
-              <View style={{ width: 300, paddingVertical: 20 }}>
-                <TextInput
-                  placeholder="Review message..."
-                  style={{ fontWeight: "bold", fontSize: 15 }}
-                />
-              </View>
-
-              <View
-                style={{
-                  alignSelf: "center",
-                  paddingVertical: 5,
-                  bottom: -100,
-                }}
-              >
-                <Pressable
-                  style={{
-                    alignItems: "center",
-                    justifyContent: "center",
-                    paddingVertical: 10,
-                    paddingHorizontal: 54,
-                    borderRadius: 12,
-                    elevation: 2,
-                    backgroundColor: "#FE8F4E",
-
-                    shadowColor: "black",
-                  }}
-                  onPress={{}}
-                >
-                  <Text
-                    style={{
-                      fontSize: 13,
-                      lineHeight: 16,
-                      fontWeight: "bold",
-                      letterSpacing: 0.25,
-                      color: "#0F0C0A",
-                    }}
-                  >
-                    Submit
-                  </Text>
-                </Pressable>
-              </View>
-            </View>
-          </Modal>
+  <View
+    style={{
+      marginTop: 20,
+      backgroundColor: "#D9D9D9",
+      paddingVertical: 8,
+      borderRadius: 8,
+      gap: 5,
+    }}
+  >
+    <View style={{ width: 300, paddingVertical: 10 }}>
+      <TextInput
+        placeholder="Title"
+        style={{ fontSize: 15, paddingLeft: 10 }}
+      />
+    </View>
+  </View>
+  <View style={{ backgroundColor: "#D9D9D9", borderRadius: 8, marginTop: 10 }}>
+    <View style={{ width: 300, height: 170, paddingVertical: 30 }}>
+      <TextInput
+        placeholder="Review message..."
+        style={{ fontSize: 15, paddingLeft: 10, paddingTop: 20 }}
+      />
+    </View>
+  </View>
+  {/* Star Rating */}
+  <View
+    style={{
+      display: "flex",
+      flexDirection: "row",
+      justifyContent: "center",
+      marginTop: 40,
+      marginLeft: -20,
+    }}
+  >
+    <TouchableOpacity onPress={() => setStarRating(1)}>
+      <Image
+        source={starRating >= 1 ? require("../assets/starF.png") : require("../assets/starB.png")}
+        style={{ width: 33, height: 33, marginRight: 5 }}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => setStarRating(2)}>
+      <Image
+        source={starRating >= 2 ? require("../assets/starF.png") : require("../assets/starB.png")}
+        style={{ width: 33, height: 33, marginRight: 5 }}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => setStarRating(3)}>
+      <Image
+        source={starRating >= 3 ? require("../assets/starF.png") : require("../assets/starB.png")}
+        style={{ width: 33, height: 33, marginRight: 5 }}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => setStarRating(4)}>
+      <Image
+        source={starRating >= 4 ? require("../assets/starF.png") : require("../assets/starB.png")}
+        style={{ width: 33, height: 33, marginRight: 5 }}
+      />
+    </TouchableOpacity>
+    <TouchableOpacity onPress={() => setStarRating(5)}>
+      <Image
+        source={starRating >= 5 ? require("../assets/starF.png") : require("../assets/starB.png")}
+        style={{ width: 33, height: 33, marginRight: 5 }}
+      />
+    </TouchableOpacity>
+     <View
+        style={{
+          alignSelf: "center",
+          paddingVertical: 5,
+          bottom: -50,
+          marginLeft:-160,
+        }}
+      >
+        <Pressable
+          style={{
+            paddingVertical: 10,
+            borderRadius: 12,
+            backgroundColor: "#FE8F4E",
+          }}
+          onPress={() => {
+            // Handle report submission
+            // You can make an API call or perform any necessary actions
+            setModalReviewVisible(false); // Close the modal after submission
+          }}
+        >
+          <Image source={require("../assets/submit.png")} style={{ width: 132, height: 28}} />
+    </Pressable>
+     </View>
+  </View>
+</Modal>
         </Pressable>
 
         {/*Review */}

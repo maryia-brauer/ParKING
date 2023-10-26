@@ -39,7 +39,7 @@ const Favourites = () => {
             </Pressable>
          
           <View>
-            <ProfileFavourite />
+            <ProfileFavourite onPress={() => navigation.navigate("Available")} />
             <ProfileFavourite />
             <ProfileFavourite />
           </View>

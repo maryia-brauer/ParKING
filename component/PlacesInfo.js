@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
-const PlacesInfo = ({data, name, available}) => {
+const PlacesInfo = ({data, address, maxSpotsCount}) => {
     const navigation = useNavigation();
  
     return (
@@ -12,8 +12,8 @@ const PlacesInfo = ({data, name, available}) => {
         >
         <View >
         <View style={{ paddingHorizontal: 10}}>
-        <Text style={{fontWeight: "bold", fontSize:20 }}>{name}</Text>
-        <Text>Available spots: {available}</Text>
+        <Text style={{fontWeight: "bold", fontSize:20 }}> {data.address}</Text>
+        <Text style={{paddingHorizontal: 5}}>Available spots: {maxSpotsCount}</Text>
         </View>
         <View style={{ paddingHorizontal: 250, bottom: 45}}>
         <Image  source={require("../assets/eye.png")}/>

@@ -15,20 +15,19 @@ import { db } from "../firebase";
 import { ref, onValue } from "firebase/database";
 import firestore from "@react-native-firebase/firestore";
 import { collection, addDocs, getDocs } from "../firebase";
+import axios from "axios";
+
 
 const AvailableParkingSpotsScreen = () => {
   const navigation = useNavigation();
-  const [parkingData2, setData2] = useState([]);
+  const [parkingData, setData] = useState([]);
 
-  const getAvailableParkingSpots2 = async () => {
-    const querySnapshot = await getDocs(collection(db, "parking"));
-    const parking = querySnapshot.docs.map((doc) => doc.data());
-    console.log(parking);
-    setData2(parking);
-  };
-
-  useEffect(() => {
-    getAvailableParkingSpots2();
+   useEffect(() => {
+    fetch('http://rhomeserver.ddns.net:8086/api/parking/get/all')
+    .then(res => res.json())
+    .then(data => setData(data))
+    .catch(err => console.log(err));
+    console.log(parkingData);
   }, []);
 
   return (
@@ -76,7 +75,6 @@ const AvailableParkingSpotsScreen = () => {
       </View>
       <ScrollView
         style={{
-          paddingBottom: 10,
           marginTop: 30,
           flexDirection: "colomn",
           backgroundColor: "#E7E7E7",
@@ -88,13 +86,13 @@ const AvailableParkingSpotsScreen = () => {
         }}
       >
         <Pressable>
-          {parkingData2.map((data, i) => {
+          {parkingData.map((data, i) => {
             return (
               <PlacesInfo
                 key={i}
                 data={data}
-                name={data.name}
-                available={data.spotsAvailable}
+                name={data.address}
+                maxSpotsCount={data.maxSpotsCount}
               />
             );
           })}

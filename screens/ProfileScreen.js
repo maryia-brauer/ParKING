@@ -1,13 +1,56 @@
 import { StyleSheet, Text, View, Image, Pressable, Button } from "react-native";
-import { React, useLayoutEffect } from "react";
+import { React, useLayoutEffect, useState, useEffect } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Favourites from "../component/Favourites";
-import { authFire } from "../firebase";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
 
 const ProfileScreen = () => {
   const navigation = useNavigation();
-  const user = authFire.currentUser;
+  const [user, setUserData] = useState([]);
+  const [currentUser, setCurrentUser] = useState([]);
+
+
+
+  useEffect(() => {
+    fetch('http://rhomeserver.ddns.net:8086/api/client/get/all')
+    .then(res => res.json())
+    .then(data => setUserData(data))
+    .catch(err => console.log(err));
+    console.log(user);
+  }, []);
+
+  const getDataAndUpdateState = async () => {
+    try {
+      const stringifiedData = await AsyncStorage.getItem('myKey');
+      if (stringifiedData !== null) {
+        const data = JSON.parse(stringifiedData);
+        setCurrentUser(data);
+        console.log('User data retrieved from AsyncStorage:', data);
+      }
+    } catch (error) {
+      console.error('Error retrieving data:', error);
+    }
+  };
+
+
+  useEffect(() => {
+    AsyncStorage.getItem('myKey')
+    .then((stringifiedData) => {
+      if (stringifiedData !== null) {
+        const data = JSON.parse(stringifiedData);
+        setCurrentUser(data); 
+        console.log(currentUser)// Update the state with the data
+      }
+    })
+    .catch((error) => {
+      console.error('Error retrieving data:', error);
+    });
+  }, []);
+   
+
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -34,6 +77,7 @@ const ProfileScreen = () => {
       <View style={{ top: 130 }}>
         <Text style={{ color: "white", fontSize: 50 }}>Profile</Text>
       </View>
+
       <View style={{ alignItems: "center" }}>
         <Text
           style={{

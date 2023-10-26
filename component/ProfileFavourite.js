@@ -1,9 +1,13 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileFavourite = () => {
+  const navigation = useNavigation();
+
   return (
-    <Pressable>
+    <TouchableOpacity >
+    <Pressable >
     <View style={styles.favourite}>
       <Text style={{ fontWeight: "bold", fontSize: 15 }}>
         Ielas nosaukums
@@ -11,6 +15,7 @@ const ProfileFavourite = () => {
       <Text>Available spots:</Text>
     </View>
   </Pressable>
+  </TouchableOpacity>
   )
 }
 
