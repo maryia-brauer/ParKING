@@ -144,7 +144,7 @@ const ParkingSpotInfo = ({ route }) => {
                 Price: {route?.params?.param?.price} Euro
               </Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
-                Owned by: {route?.params?.param?.partnerId}
+                Owned by: {route?.params?.param?.partner?.id ?? 0}
               </Text>
               <Text style={{ paddingTop: 10, paddingLeft: 10 }}>
                 Spots taken: {route?.params?.param?.spotsTaken}
@@ -185,13 +185,12 @@ const ParkingSpotInfo = ({ route }) => {
             Reviews:
           </Text>
           <Text style={{ paddingLeft: 10 }}>
-          
             {reviewData.map((data, i) => {
               return (
                 <Reviews
                   key={i}
                   data={data}
-                  partnerId={route?.params?.param?.partnerId}/>
+                  partnerId={route?.params?.param?.partner?.id ?? 0}/>
             );
             })}
           </Text>
@@ -205,7 +204,7 @@ const ParkingSpotInfo = ({ route }) => {
         >
           <Pressable
             onPress={() => navigation.navigate("Available")}
-            style={{ paddingVertical: 50, paddingHorizontal: 10 }}
+            style={{ paddingVertical: 10, paddingHorizontal: 10 }}
           >
             <Image source={require("../assets/here.png")}></Image>
           </Pressable>
@@ -213,12 +212,14 @@ const ParkingSpotInfo = ({ route }) => {
           {/*Reserve button*/}
 
           <TouchableOpacity
-            style={{ paddingHorizontal: 10, paddingVertical: 50 }}
+            style={{ paddingHorizontal: 10, paddingVertical: 10 }} 
+            
           >
             <Pressable onPress={toggleModal}>
               <Image
                 style={{}}
                 source={require("../assets/reserve.png")}
+                
               ></Image>
               <Modal
                 isVisible={isModalVisible}
