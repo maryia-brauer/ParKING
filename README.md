@@ -1,10 +1,5 @@
 # ParKING
-This is dev branch. Here we do all the work. 
-
-
-Some command you should use:
-git branch //to see on which branch you are
-git checkout dev //to swith to dev branch
-git add . //make git understand which files you would love to commit (. means all changed files from the directory)
-git commit -m "Message text" //make a commit (use commits to fix all the changes you've done)
-git push -u origin dev //push(upload) files from you local branch to dev remote branch
+The “ParKING” application will be a free mobile service that allows users to reserve and view information about parking spots in their local area. A registered community member can list any free parking space in their local vicinity marking the location of the parking space, the price (if there is one), as well as post reviews of it. 
+The app should have a premium model where companies can provide premium only parking spaces for customers to rent for a specific amount of time (e.g. 1h, 5h, 2d.). Customers are able to report/list free parking spaces in their area. 
+Getting good feedback, similar to Waze (a favorite and report system for feedback), rewards the user and levels them up. The higher the level of the customer, the more trusted they are and due to this they may receive from time to time some premium parking discounts or free premium for a set amount of time (or just badges). 
+The app for parking selection will not use a map system but instead just a simple list on which users can check the date of a specific parking spot. Both a desktop and mobile solution will be created.
